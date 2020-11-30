@@ -24,10 +24,19 @@ android {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation platform('com.google.firebase:firebase-bom:26.1.0') //added by team - firebase bom
+    implementation 'com.google.firebase:firebase-analytics' //added by team
+    implementation 'com.google.firebase:firebase-auth' //added by team
+    implementation 'com.google.firebase:firebase-database' //added by team
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0' //added by team
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    implementation 'androidx.recyclerview:recyclerview:1.1.0' //added by team
+    implementation 'androidx.cardview:cardview:1.0.0' //added by team
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

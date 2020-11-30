@@ -35,7 +35,8 @@ public class Registration extends AppCompatActivity {
     private class RegisterButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(),SubmitRegisterInfo.class);/**will make submitregister class*/
+            Intent intent = new Intent(view.getContext(), MainActivity.class);/**line for testing purposes*/
+            //Intent intent = new Intent(view.getContext(),SubmitRegisterInfo.class);/**will make submitregister class*/
             view.getContext().startActivity(intent);
         }
     }
@@ -54,54 +55,54 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-        private Boolean validateEmail () {
+    private Boolean validateEmail () {
 
-            String value = etname.getText().toString();
-            String emailPattern = "a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            if (value.isEmpty()) {
-                etname.setError("Field cannot be empty");
-                return false;
-            } else if (!value.matches(emailPattern)) {
-                etname.setError("Invalid email address.");
-                return false;
-            } else {
-                etname.setError(null);
-                return true;
-            }
+        String value = etname.getText().toString();
+        String emailPattern = "a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        if (value.isEmpty()) {
+            etname.setError("Field cannot be empty");
+            return false;
+        } else if (!value.matches(emailPattern)) {
+            etname.setError("Invalid email address.");
+            return false;
+        } else {
+            etname.setError(null);
+            return true;
+        }
+    }
+
+
+    private Boolean validatePassword () {
+
+        String value = etname.getText().toString();
+        String passwordVal = "^" + "(?=.*[a-zA-Z])" +      //any letter
+                "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                "(?=\\S+$)" +           //no white spaces
+                ".{4,}" +               //at least 4 characters
+                "$";
+        if (value.isEmpty()) {
+            etname.setError("Field cannot be empty");
+            return false;
+        } else if (!value.matches(passwordVal)) {
+            etname.setError("Password is too weak.");
+            return false;
+        } else {
+            etname.setError(null);
+            return true;
+        }
+    }
+
+
+    public void registerUser (View view){
+
+        if (!validateName() || !validateEmail() || !validatePassword()) {
+            return;
         }
 
+        String fullname = etemail.getText().toString();
+        String email = etpassword.getText().toString();
+        String password = etname.getText().toString();
 
-        private Boolean validatePassword () {
-
-            String value = etname.getText().toString();
-            String passwordVal = "^" + "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
-                    "(?=\\S+$)" +           //no white spaces
-                    ".{4,}" +               //at least 4 characters
-                    "$";
-            if (value.isEmpty()) {
-                etname.setError("Field cannot be empty");
-                return false;
-            } else if (!value.matches(passwordVal)) {
-                etname.setError("Password is too weak.");
-                return false;
-            } else {
-                etname.setError(null);
-                return true;
-            }
-        }
-
-
-        public void registerUser (View view){
-
-            if (!validateName() || !validateEmail() || !validatePassword()) {
-                return;
-            }
-
-            String fullname = etemail.getText().toString();
-            String email = etpassword.getText().toString();
-            String password = etname.getText().toString();
-
-        }
+    }
 
 }
