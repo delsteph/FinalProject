@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "780642442083",
+    "firebase_url": "https://finalproject-dca5a.firebaseio.com",
+    "project_id": "finalproject-dca5a",
+    "storage_bucket": "finalproject-dca5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780642442083:android:e678de3ef3a700d30c9156",
+        "android_client_info": {
+          "package_name": "egu.uga.cs.finalproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780642442083-p4vdq687bclq66bcaokebr1b9t4la1cg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNB0mwxaUFnYbsyLElqRPSG-LtKtcla7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780642442083-p4vdq687bclq66bcaokebr1b9t4la1cg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
