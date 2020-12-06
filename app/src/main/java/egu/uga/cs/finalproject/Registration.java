@@ -1,12 +1,24 @@
 package egu.uga.cs.finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
 
@@ -14,6 +26,8 @@ public class Registration extends AppCompatActivity {
     EditText etpassword;
     EditText etname;
     Button button;
+    private FirebaseAuth fAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +40,78 @@ public class Registration extends AppCompatActivity {
         etname = (EditText) findViewById(R.id.editName);
 
         button = (Button) findViewById(R.id.registerbutton);
+        fAuth = FirebaseAuth.getInstance();
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                String fullname = etname.getText().toString();
+                String email = etemail.getText().toString();
+                String password = etpassword.getText().toString();
+
+                /*if (!validateName() || !validateEmail() || !validatePassword()) {
+                    return;
+                }*/
+
+                if (TextUtils.isEmpty(email)) {
+                    etemail.setError("email is required");
+                    return;
+
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    etpassword.setError("email is required");
+                    return;
+
+                }
+
+                if (password.length() < 6) {
+                    etpassword.setError("Password Must be >= 6 characters");
+
+                }
+
+                if (TextUtils.isEmpty(fullname)) {
+                    etname.setError("email is required");
+                    return;
+
+                }
 
 
-        button.setOnClickListener(new RegisterButtonClickListener());
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }else{
+                            Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
 
-    }
 
-    private class RegisterButtonClickListener implements View.OnClickListener {
+                        }
+                    }
+                });
+
+
+            }
+
+
+        });
+
+    /*private class RegisterButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), MainActivity.class);/**line for testing purposes*/
-            //Intent intent = new Intent(view.getContext(),SubmitRegisterInfo.class);/**will make submitregister class*/
-            view.getContext().startActivity(intent);
+            if (!validateName() || !validateEmail() || !validatePassword()) {
+                return;
+            }
+
+            String fullname = etemail.getText().toString();
+            String email = etpassword.getText().toString();
+            String password = etname.getText().toString();
+
         }
     }
+
 
 
     private Boolean validateName(){
@@ -92,17 +164,9 @@ public class Registration extends AppCompatActivity {
         }
     }
 
+*/
 
-    public void registerUser (View view){
-
-        if (!validateName() || !validateEmail() || !validatePassword()) {
-            return;
-        }
-
-        String fullname = etemail.getText().toString();
-        String email = etpassword.getText().toString();
-        String password = etname.getText().toString();
 
     }
-
 }
+

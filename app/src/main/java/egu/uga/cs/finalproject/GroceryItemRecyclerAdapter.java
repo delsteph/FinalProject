@@ -17,7 +17,7 @@ public class GroceryItemRecyclerAdapter extends RecyclerView.Adapter<GroceryItem
     private List<GroceryItem> groceryItemList;
 
     public GroceryItemRecyclerAdapter( List<GroceryItem> groceryItemList ) {
-        this.groceryItemList = groceryItemList;
+        this.groceryItemList = groceryItemList; //takes in db list
     }
 
     // The adapter must have a ViewHolder class to "hold" one item to show.

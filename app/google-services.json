@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "780642442083",
-    "firebase_url": "https://finalproject-dca5a.firebaseio.com",
-    "project_id": "finalproject-dca5a",
-    "storage_bucket": "finalproject-dca5a.appspot.com"
+    "project_number": "1061622194524",
+    "firebase_url": "https://grocery-list-e0c7a.firebaseio.com",
+    "project_id": "grocery-list-e0c7a",
+    "storage_bucket": "grocery-list-e0c7a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:780642442083:android:e678de3ef3a700d30c9156",
+        "mobilesdk_app_id": "1:1061622194524:android:b14eabb90c841e9b88e199",
         "android_client_info": {
           "package_name": "egu.uga.cs.finalproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "780642442083-p4vdq687bclq66bcaokebr1b9t4la1cg.apps.googleusercontent.com",
+          "client_id": "1061622194524-ecs3k007pnpmfj7lmvbk9p1544f84364.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCNB0mwxaUFnYbsyLElqRPSG-LtKtcla7E"
+          "current_key": "AIzaSyAhnQ34Q1xRAsii41OGkRo-WfKgE2b8s80"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "780642442083-p4vdq687bclq66bcaokebr1b9t4la1cg.apps.googleusercontent.com",
+              "client_id": "1061622194524-ecs3k007pnpmfj7lmvbk9p1544f84364.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
