@@ -8,12 +8,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -22,12 +28,24 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final String DEBUG_TAG = "MainActivity";
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter recyclerAdapter;
+    // displays the grocery items
+    private ListView lv;
+    ArrayAdapter<String> arrayAdapter;
+
+    // gets item that's selected
+    String selectedFromList;
+
+    //private RecyclerView recyclerView;
+    //private RecyclerView.LayoutManager layoutManager;
+    //private RecyclerView.Adapter recyclerAdapter;
 
     private Button addItemButton;
-    private List<GroceryItem> groceryItemsList;
+    private Button removeItemButton;
+    private Button purchaseItemButton;
+
+    //private List<GroceryItem> groceryItemsList;
+    private List<String> groceryItemsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d( DEBUG_TAG, "MainActivity.onCreate()" );
 
-        recyclerView = (RecyclerView) findViewById( R.id.recyclerView );
+        //recyclerView = (RecyclerView) findViewById( R.id.recyclerView );
+
+        lv = (ListView) findViewById(R.id.groceryListView);
 
         // use a linear layout manager for the recycler view
-        layoutManager = new LinearLayoutManager(this );
-        recyclerView.setLayoutManager( layoutManager );
+        //layoutManager = new LinearLayoutManager(this );
+        //recyclerView.setLayoutManager( layoutManager );
 
         // get a Firebase DB instance reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("groceries");
 
-        groceryItemsList = new ArrayList<GroceryItem>();
+        //groceryItemsList = new ArrayList<GroceryItem>();
+        groceryItemsList = new ArrayList<>();
 
         // Set up a listener (event handler) to receive a value for the database reference, but only one time.
         // This type of listener is called by Firebase once by immediately executing its onDataChange method.
@@ -59,18 +80,29 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange( DataSnapshot snapshot ) {
+                // System.out.println("in the first method ____________----------");
                 // Once we have a DataSnapshot object, knowing that this is a list,
                 // we need to iterate over the elements and place them on a List.
                 for( DataSnapshot postSnapshot: snapshot.getChildren() ) {
-                    GroceryItem groceryItem = postSnapshot.getValue(GroceryItem.class);
-                    groceryItemsList.add(groceryItem);
-                    Log.d( DEBUG_TAG, "MainActivity.onCreate(): added: " + groceryItem );
+                    //GroceryItem groceryItem = postSnapshot.getValue(GroceryItem.class);
+                    //System.out.println("format of the json--------" + postSnapshot.getValue());
+                    String currentGrocery = postSnapshot.child("groceryName").getValue(String.class);
+                    //System.out.println("format of the json--------" + currentGrocery);
+                    groceryItemsList.add(postSnapshot.child("groceryName").getValue(String.class));
+                    Log.d( DEBUG_TAG, "MainActivity.onCreate(): added: " + postSnapshot.child("groceryName").getValue(String.class));
                 }
                 Log.d( DEBUG_TAG, "MainActivity.onCreate(): setting recyclerAdapter" );
 
                 // Now, create a GroceryItemRecyclerAdapter to populate a ReceyclerView to display the job leads.
-                recyclerAdapter = new GroceryItemRecyclerAdapter( groceryItemsList );
-                recyclerView.setAdapter( recyclerAdapter );
+                //recyclerAdapter = new GroceryItemRecyclerAdapter( groceryItemsList );
+                //recyclerView.setAdapter( recyclerAdapter );
+
+                arrayAdapter = new ArrayAdapter<>(
+                        getApplicationContext(),
+                        android.R.layout.simple_list_item_1,
+                        groceryItemsList );
+
+                lv.setAdapter(arrayAdapter);
             }
 
             @Override
@@ -83,9 +115,64 @@ public class MainActivity extends AppCompatActivity {
         addItemButton = (Button) findViewById( R.id.button3 );
         addItemButton.setOnClickListener( new ButtonClickListener());
 
+        //button to allow user to remove item from list
+        removeItemButton = (Button) findViewById( R.id.removeItem );
+        removeItemButton.setOnClickListener( new removeItemButtonClickListener());
+
+        // sets the selected
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
+                selectedFromList =(String) (lv.getItemAtPosition(myItemInt));
+                //lv.getListView().setItemChecked(selectedGroupIndex, true);
+                //arrayAdapter.remove(selectedFromList);
+                //arrayAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 
+    // removes item from list
+    private class removeItemButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            if (selectedFromList == null) {
+                Toast.makeText(getApplicationContext(), "Please select an item to delete.",
+                        Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            System.out.println("selected from list ===============" + selectedFromList );
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            Query groceryQuery = ref.child("groceries").orderByChild("groceryName").equalTo(selectedFromList);
+
+            groceryQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    System.out.println("selected from list ---------------" + selectedFromList );
+                    for (DataSnapshot grocerySnapshot: dataSnapshot.getChildren()) {
+                        // deletes item from firebase and waits till success to reload updated list
+                        grocerySnapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                recreate(); //reloads updated list
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(DEBUG_TAG, "onCancelled", databaseError.toException());
+                }
+            });
+        }
+    }
+
+    // opens new view to add a new item
     private class ButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {

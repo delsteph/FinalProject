@@ -3,19 +3,19 @@ package egu.uga.cs.finalproject;
 public class GroceryItem {
     private String groceryName;
     //private String price;
-    private String quantity;
+    //private String quantity;
 
     public GroceryItem()
     {
         this.groceryName = null;
         //this.price = null;
-        this.quantity = null;
+        //this.quantity = null;
     }
 
-    public GroceryItem( String groceryName, String quantity) {
+    public GroceryItem( String groceryName) {
         this.groceryName = groceryName;
         //this.price = price;
-        this.quantity = quantity;
+        //this.quantity = quantity;
 
     }
 
@@ -35,16 +35,16 @@ public class GroceryItem {
 //        this.price = price;
 //    }
 
-    public String getQuantity() {
-        return quantity;
-    }
+//    public String getQuantity() {
+//        return quantity;
+//    }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
+//    public void setQuantity(String quantity) {
+//        this.quantity = quantity;
+//    }
 
 
     public String toString() {
-        return groceryName + " " + quantity;
+        return groceryName;
     }
 }

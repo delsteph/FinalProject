@@ -14,34 +14,43 @@
         android:hint="Name of Grocery Item"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/editNumberDecimalQuantity"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.879" />
 
     <Button
         android:id="@+id/addItemButton"
         android:layout_width="199dp"
         android:layout_height="42dp"
+        android:layout_marginBottom="128dp"
         android:gravity="center_horizontal"
         android:text="Add Item"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNumberDecimalQuantity" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editNumberDecimalQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center_horizontal"
-        android:hint="Enter Quantity of Items"
-        android:inputType="numberDecimal"
-        android:textAlignment="center"
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="221dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="156dp"
+        android:text='Enter the item you would like to add to the grocery list, e.g. "6 bananas", "Gallon of milk"'
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/addItemButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextGroceryName" />
+        app:layout_constraintTop_toBottomOf="@+id/addItemButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

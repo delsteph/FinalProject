@@ -1,5 +1,6 @@
 package egu.uga.cs.finalproject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,9 @@ public class NewGroceryItemActivity extends AppCompatActivity {
 
     private EditText groceryNameView;
     //private EditText priceView;
-    private EditText quantityView;
-    private Button   saveButton;
+    //private EditText quantityView;
+    private Button saveButton;
+    private Button doneButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,22 @@ public class NewGroceryItemActivity extends AppCompatActivity {
 
         groceryNameView = (EditText) findViewById( R.id.editTextGroceryName );
         //priceView = (EditText) findViewById( R.id.editNumberPrice );
-        quantityView = (EditText) findViewById( R.id.editNumberDecimalQuantity );
+        //quantityView = (EditText) findViewById( R.id.editNumberDecimalQuantity );
         saveButton = (Button) findViewById( R.id.addItemButton );
+        doneButton = (Button) findViewById( R.id.doneButton );
 
-        saveButton.setOnClickListener( new ButtonClickListener()) ;
+        // if button is clicked, adds item to database
+        saveButton.setOnClickListener( new ButtonClickListener());
+        // returns user to main page (list)
+        doneButton.setOnClickListener( new doneButtonClickListener());
+    }
+
+    private class doneButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), MainActivity.class);
+            view.getContext().startActivity(intent);
+        }
     }
 
     private class ButtonClickListener implements View.OnClickListener {
@@ -42,8 +56,8 @@ public class NewGroceryItemActivity extends AppCompatActivity {
         public void onClick(View v) {
             String groceryName = groceryNameView.getText().toString();
             //String price = priceView.getText().toString();
-            String quantity = quantityView.getText().toString();
-            final GroceryItem groceryItem = new GroceryItem( groceryName, quantity);
+            //String quantity = quantityView.getText().toString();
+            final GroceryItem groceryItem = new GroceryItem( groceryName);
 
             // Add a new element (JobLead) to the list of job leads in Firebase.
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -59,19 +73,19 @@ public class NewGroceryItemActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             // Show a quick confirmation
-                            Toast.makeText(getApplicationContext(), "Item added to grocery list:  " + groceryItem.getGroceryName(),
+                            Toast.makeText(getApplicationContext(), "Item added to grocery list:  " + groceryItem,
                                     Toast.LENGTH_SHORT).show();
 
                             // Clear the EditTexts for next use.
                             groceryNameView.setText("");
                             //priceView.setText("");
-                            quantityView.setText("");
+                            //quantityView.setText("");
                         }
                     })
                     .addOnFailureListener( new OnFailureListener() {
                         @Override
                         public void onFailure(Exception e) {
-                            Toast.makeText( getApplicationContext(), "Failed to create a Job lead for " + groceryItem.getGroceryName(),
+                            Toast.makeText( getApplicationContext(), "Failed to create a Job lead for " + groceryItem,
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
