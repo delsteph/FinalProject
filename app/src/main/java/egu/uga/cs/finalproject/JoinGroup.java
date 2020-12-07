@@ -68,6 +68,7 @@ public class JoinGroup extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
 
                         Toast.makeText(JoinGroup.this, "User has been added to group", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), Login.class));
                     }
                 });
 

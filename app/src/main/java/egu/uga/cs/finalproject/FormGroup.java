@@ -1,5 +1,6 @@
 package egu.uga.cs.finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -86,6 +87,7 @@ public class FormGroup extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
 
                                         Toast.makeText(FormGroup.this,"Group created", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), Login.class));
                                     }
                                 });
 

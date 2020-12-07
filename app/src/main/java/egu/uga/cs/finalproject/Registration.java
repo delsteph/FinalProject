@@ -91,7 +91,7 @@ public class Registration extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()) {
                                                 Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(getApplicationContext(), Login.class));
+                                                startActivity(new Intent(getApplicationContext(), JoinOrFormGroupPage.class));
                                             }
                                             else{
                                                 Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

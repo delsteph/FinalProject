@@ -10,13 +10,16 @@ import android.widget.Button;
 
 public class JoinOrFormGroupPage extends AppCompatActivity {
 
-    Button fgbutton = (Button) findViewById(R.id.creategroup);
-    Button joinButton = (Button) findViewById(R.id.joingroup);
+    Button fgbutton;
+    Button joinButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_or_form_group_page);
+
+        fgbutton = (Button) findViewById(R.id.creategroup);
+        joinButton = (Button) findViewById(R.id.joingroup);
 
         fgbutton.setOnClickListener(new View.OnClickListener() {
 
