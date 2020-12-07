@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -26,7 +27,6 @@ public class Registration extends AppCompatActivity {
     EditText etpassword;
     EditText etname;
     Button button;
-    private FirebaseAuth fAuth;
 
 
     @Override
@@ -40,28 +40,26 @@ public class Registration extends AppCompatActivity {
         etname = (EditText) findViewById(R.id.editName);
 
         button = (Button) findViewById(R.id.registerbutton);
-        fAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth fAuth = FirebaseAuth.getInstance();
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                String fullname = etname.getText().toString();
-                String email = etemail.getText().toString();
-                String password = etpassword.getText().toString();
 
-                /*if (!validateName() || !validateEmail() || !validatePassword()) {
-                    return;
-                }*/
+                final String fullname = etname.getText().toString();
+                final String email = etemail.getText().toString();
+                final String password = etpassword.getText().toString();
+
 
                 if (TextUtils.isEmpty(email)) {
-                    etemail.setError("email is required");
+                    etemail.setError("Email is required");
                     return;
 
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    etpassword.setError("email is required");
+                    etpassword.setError("Password is required");
                     return;
 
                 }
@@ -81,21 +79,32 @@ public class Registration extends AppCompatActivity {
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        }else{
-                            Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
 
+
+                            User newuser = new User(fullname, email, password);
+
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(newuser)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(getApplicationContext(), Login.class));
+                                            }
+                                            else{
+                                                Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     }
                 });
-
-
             }
-
-
         });
 
     /*private class RegisterButtonClickListener implements View.OnClickListener {
