@@ -23,6 +23,7 @@ public class FormGroup extends AppCompatActivity {
     FirebaseAuth fAuth;
     String groupID;
     String groupTitle;
+    String userID;
 
     EditText groupName;
     TextView groupCode;
@@ -38,9 +39,6 @@ public class FormGroup extends AppCompatActivity {
         groupName = (EditText) findViewById(R.id.groupName);
         groupCode = (TextView) findViewById(R.id.groupCode);
 
-        // automatically creates code for new group
-        groupID = "" + System.currentTimeMillis();
-        groupCode.setText(groupID);
 
         button = (Button) findViewById(R.id.button2);
         fAuth = FirebaseAuth.getInstance();
@@ -50,6 +48,8 @@ public class FormGroup extends AppCompatActivity {
             public void onClick(View view) {
 
                 groupTitle = groupName.getText().toString();
+                groupID = "" + System.currentTimeMillis();
+                userID = fAuth.getUid();
 
                 if (TextUtils.isEmpty(groupTitle)) {
                     groupName.setError("Group name is required");
@@ -57,6 +57,8 @@ public class FormGroup extends AppCompatActivity {
 
                 } else {
                     createGroup(groupID, groupTitle);
+
+                    groupCode.setText(groupID);
                 }
             }
         }); //end of button
@@ -66,19 +68,19 @@ public class FormGroup extends AppCompatActivity {
     private void createGroup(final String groupID, String groupName) {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
-        ref.child(groupID).setValue(groupID) //create distinct group num
+        ref.child(groupID).setValue(groupID) //creat distinct group num
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
                         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
                         ref1.child(groupID).child("Participants").push()
-                                .setValue(fAuth.getCurrentUser().getEmail())
+                                .setValue(fAuth.getUid())
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
-                                        Toast.makeText(FormGroup.this,"Group created", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(FormGroup.this, "Group created", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), Login.class));
                                     }
                                 });
@@ -86,8 +88,23 @@ public class FormGroup extends AppCompatActivity {
                     }
                 });
 
+
+
+        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("users").child(userID);
+        ref1.child("groupID").setValue(groupID)
+
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(FormGroup.this, "Group added to user", Toast.LENGTH_SHORT).show();
+                        // startActivity(new Intent(getApplicationContext(), Login.class));
+                    }
+                });
+
+
+
+
     }
 
 }
-
-

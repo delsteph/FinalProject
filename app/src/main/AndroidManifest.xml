@@ -26,6 +26,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".NewGroceryItemActivity" />
         <activity android:name=".FormGroup" />
+        <activity android:name=".UserInfoPage" />
         <activity android:name=".ReviewPurchasedListActivity"/>
         <activity android:name=".UpdatePriceActivity"/>
         <activity android:name=".PurchaseItemActivity"/>

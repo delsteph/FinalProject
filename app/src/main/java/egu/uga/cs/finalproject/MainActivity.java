@@ -124,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         viewPurchasedList = (Button) findViewById( R.id.purchasedListButton );
         viewPurchasedList.setOnClickListener( new purchasedListButtonClickListener());
 
+        Button profile = (Button)findViewById(R.id.userProfile);
+        profile.setOnClickListener( new profileButtonClickListener());
+
+
         // sets the selected item from list
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -139,6 +143,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), ReviewPurchasedListActivity.class);
+            view.getContext().startActivity(intent);
+        }
+    }
+
+    private class profileButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            Intent intent = new Intent(view.getContext(), UserInfoPage.class);
             view.getContext().startActivity(intent);
         }
     }

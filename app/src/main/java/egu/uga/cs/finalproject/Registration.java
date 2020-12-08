@@ -82,7 +82,7 @@ public class Registration extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
 
-                            User newuser = new User(fullname, email, password);
+                            User newuser = new User(fullname, email);
 
                             FirebaseDatabase.getInstance().getReference("users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(newuser)

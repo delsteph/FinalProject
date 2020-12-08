@@ -2,33 +2,48 @@ package egu.uga.cs.finalproject;
 
 public class User {
 
-
-        private String userName;
-        private String email;
-        private String password;
-
-
-        public User( String userName, String email, String password) {
-            this.userName = userName;
-            this.email = email;
-            this.password = password;
-
-        }
-
-        public String getUserName() {
-            return userName;
-        }
+    private String userName;
+    private String email;
+    private String groupID;
 
 
-        public String getEmail() {
-            return email;
-        }
+    public User() {
 
-
-
-        public String toString() {
-            return userName + " " + email;
-        }
+        userName="";
+        email="";
+        groupID="";
     }
+
+    public User(String userName, String email) {
+        this.userName = userName;
+        this.email = email;
+    }
+
+    public String getName() {
+        return userName;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getGroupID() {
+        return groupID;
+    }
+
+    public void setName(String username) {
+        this.userName = username;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
+}
 
 

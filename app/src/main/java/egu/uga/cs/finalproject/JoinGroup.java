@@ -25,6 +25,7 @@ public class JoinGroup extends AppCompatActivity {
 
     FirebaseAuth fAuth;
     String groupID;
+    String userID;
     TextView groupCode;
     Button button;
 
@@ -39,7 +40,7 @@ public class JoinGroup extends AppCompatActivity {
 
         button = (Button) findViewById(R.id.button2);
         fAuth = FirebaseAuth.getInstance();
-
+        userID = fAuth.getUid();
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -49,7 +50,7 @@ public class JoinGroup extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(groupID)) {
                     groupCode.setError("Group ID is required");
-                    return; //dont procede further
+                    return; //dont precede further
 
                 } else {
                     joinGroup(groupID);
@@ -63,7 +64,7 @@ public class JoinGroup extends AppCompatActivity {
 
         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
         ref1.child(groupID).child("Participants").push()
-                .setValue(fAuth.getCurrentUser().getEmail())
+                .setValue(fAuth.getUid())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -73,8 +74,21 @@ public class JoinGroup extends AppCompatActivity {
                     }
                 });
 
+        User user2 = new User();
+        user2.setGroupID(groupID);
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("users");
+        ref1.child(userID)
+                .setValue(user2)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(JoinGroup.this, "Group added to user", Toast.LENGTH_SHORT).show();
+                        // startActivity(new Intent(getApplicationContext(), Login.class));
+                    }
+                });
+
 
     }
 
 }
-
