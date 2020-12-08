@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NavigationHomeScreen"></activity>
         <activity android:name=".Registration">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +20,9 @@
         <activity android:name=".SplashScreen" />
         <activity android:name=".MainActivity" />
         <activity android:name=".NewGroceryItemActivity" />
+        <activity android:name=".PurchaseItemActivity"/>
+        <activity android:name=".ReviewPurchasedListActivity"/>
+        <activity android:name=".UpdatePriceActivity"/>
     </application>
 
 </manifest>

@@ -26,7 +26,7 @@ android {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.1.0') //added by team - firebase bom
     implementation 'com.google.firebase:firebase-analytics' //added by team
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-database' //added by team
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0' //added by team
 

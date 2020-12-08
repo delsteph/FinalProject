@@ -22,12 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class PurchaseItemActivity extends AppCompatActivity {
+public class UpdatePriceActivity extends AppCompatActivity {
+
     public static final String DEBUG_TAG = "PurchaseItemActivity";
 
     private TextView itemToPurchaseTV;
     private EditText priceView;
-    private Button purchaseButton;
+    private Button updateButton;
     private Button cancelButton;
     private String selectedFromListValue;
 
@@ -40,12 +41,10 @@ public class PurchaseItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_purchase_item);
+        setContentView(R.layout.activity_update_price);
 
         // to get current signed in user
         mAuth = FirebaseAuth.getInstance();
-        //currentUser = mAuth.getCurrentUser();
-        //currentUserString = currentUser.toString();
         currentUserString = "user";
 
         // gets information passed to it from main view
@@ -53,74 +52,51 @@ public class PurchaseItemActivity extends AppCompatActivity {
         selectedFromListValue = mIntent.getStringExtra("selectedFromList");
 
         itemToPurchaseTV = (TextView) findViewById( R.id.itemToUpdateTextView);
-        itemToPurchaseTV.setText("You are purchasing this grocery item: " + selectedFromListValue);
+        itemToPurchaseTV.setText("You are updating the price of this grocery item: " + selectedFromListValue);
 
         priceView = (EditText) findViewById( R.id.enterNewPriceView);
-
-        purchaseButton = (Button) findViewById( R.id.updatePriceButton);
+        updateButton = (Button) findViewById( R.id.updatePriceButton);
         cancelButton = (Button) findViewById( R.id.cancelUpdateButton);
 
-        // if button is clicked, adds purchased item to purchased list in database
-        purchaseButton.setOnClickListener( new PurchaseItemActivity.purchaseButtonClickListener());
+        // if button is clicked, updates price in the database
+        updateButton.setOnClickListener( new UpdatePriceActivity.updateButtonClickListener());
         // returns user to main page (list)
-        cancelButton.setOnClickListener( new PurchaseItemActivity.cancelButtonClickListener());
+        cancelButton.setOnClickListener( new UpdatePriceActivity.cancelButtonClickListener());
     }
 
     private class cancelButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), MainActivity.class);
+            Intent intent = new Intent(view.getContext(), ReviewPurchasedListActivity.class);
             view.getContext().startActivity(intent);
         }
     }
 
-    private class purchaseButtonClickListener implements View.OnClickListener {
+    private class updateButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            String groceryPrice = priceView.getText().toString();
+            final String groceryPrice = priceView.getText().toString();
             if (groceryPrice == null) {
-                Toast.makeText(getApplicationContext(), "Please add a final price of the item before purchasing.",
+                Toast.makeText(getApplicationContext(), "Please write the updated price.",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
-            //String price = priceView.getText().toString();
-            //String quantity = quantityView.getText().toString();
-            final GroceryItemPurchased groceryItemPurchased =
-                    new GroceryItemPurchased(selectedFromListValue, groceryPrice, currentUserString);
 
-            // Add a new element (JobLead) to the list of job leads in Firebase.
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("PurchasedGroceries");
 
-            // First, a call to push() appends a new node to the existing list (one is created
-            // if this is done for the first time).  Then, we set the value in the newly created
-            // list node to store the new job lead.
-            // This listener will be invoked asynchronously, as no need for an AsyncTask, as in
-            // the previous apps to maintain job leads.
-            myRef.push().setValue( groceryItemPurchased )
-                    .addOnSuccessListener( new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // Show a quick confirmation
-                            Toast.makeText(getApplicationContext(), "Item added to Purchased Grocery List:  " + groceryItemPurchased,
-                                    Toast.LENGTH_SHORT).show();
+            myRef.child(selectedFromListValue).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            // removes the purchased item from the grocery list
-                            removePurchasedItem();
+                    dataSnapshot.getRef().child("price").setValue(groceryPrice);
 
-                            // Clear the EditTexts for next use.
-                            priceView.setText("");
-
-
-                        }
-                    })
-                    .addOnFailureListener( new OnFailureListener() {
-                        @Override
-                        public void onFailure(Exception e) {
-                            Toast.makeText( getApplicationContext(), "Failed to create a Job lead for " + groceryItemPurchased,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("User", databaseError.getMessage());
+                }
+            });
 
             // switches to the purchased list view
             Intent intent = new Intent(v.getContext(), ReviewPurchasedListActivity.class);

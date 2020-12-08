@@ -16,16 +16,13 @@ public class GroceryItemPurchased {
         this.groceryName = groceryName;
         this.price = price;
         this.purchaserName = purchaserName;
-
     }
 
     public String getGroceryName() {
-
         return groceryName;
     }
 
     public void setGroceryName(String groceryName) {
-
         this.groceryName = groceryName;
     }
 

@@ -32,7 +32,16 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/groceryQuantity"
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:autoLink="phone"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/purchaserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"

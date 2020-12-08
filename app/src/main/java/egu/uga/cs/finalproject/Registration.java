@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,14 +42,22 @@ public class Registration extends AppCompatActivity {
 
         button = (Button) findViewById(R.id.registerbutton);
         fAuth = FirebaseAuth.getInstance();
+
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
+                // added next two lines for testing purposes
+                //Intent intent = new Intent(view.getContext(), MainActivity.class);
+                //view.getContext().startActivity(intent);
+
                 String fullname = etname.getText().toString();
                 String email = etemail.getText().toString();
                 String password = etpassword.getText().toString();
+
+                //final FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth = FirebaseAuth.getInstance();
 
                 /*if (!validateName() || !validateEmail() || !validatePassword()) {
                     return;
@@ -57,47 +66,40 @@ public class Registration extends AppCompatActivity {
                 if (TextUtils.isEmpty(email)) {
                     etemail.setError("email is required");
                     return;
-
                 }
 
                 if (TextUtils.isEmpty(password)) {
                     etpassword.setError("email is required");
                     return;
-
                 }
 
                 if (password.length() < 6) {
                     etpassword.setError("Password Must be >= 6 characters");
-
                 }
 
                 if (TextUtils.isEmpty(fullname)) {
                     etname.setError("email is required");
                     return;
-
                 }
 
-
-                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Registration.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                            // added by uriel for testing purposes
+                            //FirebaseUser user = fAuth.getCurrentUser();
                         }else{
                             Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-
-
                         }
                     }
                 });
-
-
             }
-
-
         });
 
+    }
     /*private class RegisterButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -166,7 +168,5 @@ public class Registration extends AppCompatActivity {
 
 */
 
-
-    }
-}
+} //class
 

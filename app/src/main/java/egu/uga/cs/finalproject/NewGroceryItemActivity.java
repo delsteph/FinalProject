@@ -55,11 +55,16 @@ public class NewGroceryItemActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             String groceryName = groceryNameView.getText().toString();
+            if (groceryName == null) {
+                Toast.makeText(getApplicationContext(), "Please type an item to add.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
             //String price = priceView.getText().toString();
             //String quantity = quantityView.getText().toString();
             final GroceryItem groceryItem = new GroceryItem( groceryName);
 
-            // Add a new element (JobLead) to the list of job leads in Firebase.
+            // Add a new element (GroceryItem) to the list of job leads in Firebase.
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("groceries");
 
