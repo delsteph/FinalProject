@@ -32,9 +32,9 @@ public class JoinGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formgroup);
+        setContentView(R.layout.activity_join_group);
 
-        groupCode = (TextView) findViewById(R.id.groupCode);
+        groupCode = (TextView) findViewById(R.id.groupName);
 
 
         button = (Button) findViewById(R.id.button2);
@@ -61,7 +61,7 @@ public class JoinGroup extends AppCompatActivity {
     private void joinGroup(final String groupID) {
 
         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
-        ref1.child(groupID).child("Participants")
+        ref1.child(groupID).child("Participants").push()
                 .setValue(fAuth.getUid())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

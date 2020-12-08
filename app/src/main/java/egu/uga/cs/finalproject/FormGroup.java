@@ -64,24 +64,15 @@ public class FormGroup extends AppCompatActivity {
 
     private void createGroup(final String groupID, String groupName) {
 
-         HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("groupId", "" +groupID);
-        hashMap.put("groupName", "" + groupName);
-        hashMap.put("createdBy","" + fAuth.getUid());
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
-        ref.child(groupID).setValue(hashMap)
+        ref.child(groupID).setValue(groupID) //creat distinct group num
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        HashMap<String, String> hashMap1 = new HashMap<>();
-                        hashMap1.put("uid", fAuth.getUid());
-                        hashMap1.put("role","creator");
-                        hashMap1.put("timestamp", groupID);
 
                         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
-                        ref1.child(groupID).child("Participants").child(fAuth.getUid())
-                                .setValue(hashMap1)
+                        ref1.child(groupID).child("Participants").push()
+                                .setValue(fAuth.getUid())
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
