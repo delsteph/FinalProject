@@ -111,9 +111,7 @@ public class Login extends AppCompatActivity {
 
                 Log.i( "FireBase Test", "Signed in as: " + user.getEmail() );
 
-                // after a successful sign in, start the job leads management activity
-
-
+                // after a successful sign in, start the main activity
 
                 Intent intent = new Intent( this, MainActivity.class );
                 startActivity( intent );

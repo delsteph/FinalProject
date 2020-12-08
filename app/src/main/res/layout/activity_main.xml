@@ -8,56 +8,6 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Add Item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ListView
-        android:id="@+id/purchasedListView"
-        android:choiceMode="singleChoice"
-        android:listSelector="@android:color/darker_gray"
-        android:layout_width="423dp"
-        android:layout_height="484dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497" />
-
-    <Button
-        android:id="@+id/removeItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Remove Item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="0.347"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/purchaseItemMainButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Purchase Item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.806"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
-        app:layout_constraintVertical_bias="0.789" />
-
-    <Button
         android:id="@+id/purchasedListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,4 +16,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/purchasedListView"
+        android:layout_width="423dp"
+        android:layout_height="484dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.303" />
+
+    <Button
+        android:id="@+id/removeItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/purchaseItemMainButton"
+        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintVertical_bias="0.637" />
+
+    <Button
+        android:id="@+id/purchaseItemMainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Purchase Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/removeItem"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintVertical_bias="0.631" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Add Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/removeItem"
+        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintVertical_bias="0.731" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

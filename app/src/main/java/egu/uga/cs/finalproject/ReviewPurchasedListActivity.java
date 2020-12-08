@@ -38,6 +38,7 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
     private Button undoPurchaseButton;
     private Button editPriceButton;
     private Button settleCostButton;
+    private Button mainListButton;
     private List<GroceryItemPurchased> purchasedItemsList;
 
 
@@ -84,7 +85,6 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
                 // pass the information to the arrayadapter to create the list rows
                 arrayAdapter = new PurchasedListAdapter(getApplicationContext(), R.layout.grocery_item_purchased, purchasedItemsList );
                 listView.setAdapter(arrayAdapter);
-
             }
 
             @Override
@@ -104,6 +104,10 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
         //button that changes views to allow user to settle the cost of the list
         settleCostButton = (Button) findViewById( R.id.settleCostButton );
         settleCostButton.setOnClickListener( new ReviewPurchasedListActivity.settleCostButtonClickListener());
+
+        //button that changes views to allow user to settle the cost of the list
+        mainListButton = (Button) findViewById( R.id.mainListButton );
+        mainListButton.setOnClickListener( new ReviewPurchasedListActivity.mainListButtonClickListener());
 
         // sets the selected item from list
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -201,6 +205,7 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
 
             Intent intent = new Intent(view.getContext(), UpdatePriceActivity.class);
             intent.putExtra("selectedFromList", selectedFromList.getGroceryName());
+            intent.putExtra("priceFromList", selectedFromList.getPrice());
             view.getContext().startActivity(intent);
 
         }
@@ -212,6 +217,14 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), NewGroceryItemActivity.class);
+            view.getContext().startActivity(intent);
+        }
+    }
+
+    private class mainListButtonClickListener  implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), MainActivity.class);
             view.getContext().startActivity(intent);
         }
     }

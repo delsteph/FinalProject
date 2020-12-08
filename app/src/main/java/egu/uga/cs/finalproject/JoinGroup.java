@@ -39,6 +39,7 @@ public class JoinGroup extends AppCompatActivity {
 
         button = (Button) findViewById(R.id.button2);
         fAuth = FirebaseAuth.getInstance();
+
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -48,7 +49,7 @@ public class JoinGroup extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(groupID)) {
                     groupCode.setError("Group ID is required");
-                    return; //dont precede further
+                    return; //dont procede further
 
                 } else {
                     joinGroup(groupID);
@@ -62,7 +63,7 @@ public class JoinGroup extends AppCompatActivity {
 
         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
         ref1.child(groupID).child("Participants").push()
-                .setValue(fAuth.getUid())
+                .setValue(fAuth.getCurrentUser().getEmail())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

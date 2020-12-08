@@ -31,6 +31,7 @@ public class UpdatePriceActivity extends AppCompatActivity {
     private Button updateButton;
     private Button cancelButton;
     private String selectedFromListValue;
+    private String priceFromListValue;
 
     // to get current signed in user
     private FirebaseAuth mAuth;
@@ -50,6 +51,7 @@ public class UpdatePriceActivity extends AppCompatActivity {
         // gets information passed to it from main view
         Intent mIntent = getIntent();
         selectedFromListValue = mIntent.getStringExtra("selectedFromList");
+        priceFromListValue = mIntent.getStringExtra("priceFromList");
 
         itemToPurchaseTV = (TextView) findViewById( R.id.itemToUpdateTextView);
         itemToPurchaseTV.setText("You are updating the price of this grocery item: " + selectedFromListValue);
@@ -64,6 +66,7 @@ public class UpdatePriceActivity extends AppCompatActivity {
         cancelButton.setOnClickListener( new UpdatePriceActivity.cancelButtonClickListener());
     }
 
+    // cancels the price update and takes user to purchased list activity
     private class cancelButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -72,39 +75,51 @@ public class UpdatePriceActivity extends AppCompatActivity {
         }
     }
 
+    // updates the price of the selected item
     private class updateButtonClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             final String groceryPrice = priceView.getText().toString();
+
             if (groceryPrice == null) {
                 Toast.makeText(getApplicationContext(), "Please write the updated price.",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("PurchasedGroceries");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            //Query groceryQuery = ref.child("PurchasedGroceries").orderByChild("groceryName").equalTo(selectedFromListValue);
+            Query groceryQuery = ref.child("PurchasedGroceries").orderByChild("price").equalTo(priceFromListValue);
+            System.out.println("selected query ---------------" + groceryQuery );
+            groceryQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
-            myRef.child(selectedFromListValue).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    dataSnapshot.getRef().child("price").setValue(groceryPrice);
-
+                    System.out.println("selected from list ---------------" + selectedFromListValue );
+                    for (DataSnapshot grocerySnapshot: dataSnapshot.getChildren()) {
+                        //final String itemName = grocerySnapshot.child("groceryName").getValue(String.class);
+                        // updates item price in firebase and waits till success to reload updated list
+                        grocerySnapshot.getRef().child("price").setValue(groceryPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                recreate(); //reloads updated list
+                                // switches to the purchased list view
+                                Intent intent = new Intent(v.getContext(), ReviewPurchasedListActivity.class);
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+                    }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Log.d("User", databaseError.getMessage());
+                    Log.e(DEBUG_TAG, "onCancelled", databaseError.toException());
                 }
             });
-
-            // switches to the purchased list view
-            Intent intent = new Intent(v.getContext(), ReviewPurchasedListActivity.class);
-            v.getContext().startActivity(intent);
         }
     }
 
-    //removes the purchased item from the grocery list
+    //removes the purchased item from the grocery list -- probably dont need in this class
     private void removePurchasedItem() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query groceryQuery = ref.child("groceries").orderByChild("groceryName").equalTo(selectedFromListValue);

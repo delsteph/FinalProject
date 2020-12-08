@@ -34,7 +34,7 @@ public class PurchaseItemActivity extends AppCompatActivity {
     // to get current signed in user
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private String currentUserString;
+    private String currentUserEmail;
 
 
     @Override
@@ -44,9 +44,8 @@ public class PurchaseItemActivity extends AppCompatActivity {
 
         // to get current signed in user
         mAuth = FirebaseAuth.getInstance();
-        //currentUser = mAuth.getCurrentUser();
-        //currentUserString = currentUser.toString();
-        currentUserString = "user";
+        currentUser = mAuth.getCurrentUser();
+        currentUserEmail = currentUser.getEmail();
 
         // gets information passed to it from main view
         Intent mIntent = getIntent();
@@ -86,7 +85,7 @@ public class PurchaseItemActivity extends AppCompatActivity {
             //String price = priceView.getText().toString();
             //String quantity = quantityView.getText().toString();
             final GroceryItemPurchased groceryItemPurchased =
-                    new GroceryItemPurchased(selectedFromListValue, groceryPrice, currentUserString);
+                    new GroceryItemPurchased(selectedFromListValue, groceryPrice, currentUserEmail);
 
             // Add a new element (JobLead) to the list of job leads in Firebase.
             FirebaseDatabase database = FirebaseDatabase.getInstance();
