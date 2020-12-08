@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView" />
+        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ListView
         android:id="@+id/purchasedListView"
@@ -35,12 +36,14 @@
         android:id="@+id/removeItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="Remove Item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView" />
+        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/purchaseItemMainButton"
@@ -49,15 +52,16 @@
         android:text="Purchase Item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintHorizontal_bias="0.806"
         app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView" />
+        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintVertical_bias="0.789" />
 
     <Button
         android:id="@+id/purchasedListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Purchased List"
+        android:text="View Purchased Groceries"
         app:layout_constraintBottom_toTopOf="@+id/purchasedListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

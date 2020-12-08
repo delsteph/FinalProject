@@ -27,7 +27,6 @@ public class Registration extends AppCompatActivity {
     EditText etpassword;
     EditText etname;
     Button button;
-    private FirebaseAuth fAuth;
 
 
     @Override
@@ -41,65 +40,73 @@ public class Registration extends AppCompatActivity {
         etname = (EditText) findViewById(R.id.editName);
 
         button = (Button) findViewById(R.id.registerbutton);
-        fAuth = FirebaseAuth.getInstance();
-
+        final FirebaseAuth fAuth = FirebaseAuth.getInstance();
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                // added next two lines for testing purposes
-                //Intent intent = new Intent(view.getContext(), MainActivity.class);
-                //view.getContext().startActivity(intent);
 
-                String fullname = etname.getText().toString();
-                String email = etemail.getText().toString();
-                String password = etpassword.getText().toString();
+                final String fullname = etname.getText().toString();
+                final String email = etemail.getText().toString();
+                final String password = etpassword.getText().toString();
 
-                //final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-                fAuth = FirebaseAuth.getInstance();
-
-                /*if (!validateName() || !validateEmail() || !validatePassword()) {
-                    return;
-                }*/
 
                 if (TextUtils.isEmpty(email)) {
-                    etemail.setError("email is required");
+                    etemail.setError("Email is required");
                     return;
+
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    etpassword.setError("email is required");
+                    etpassword.setError("Password is required");
                     return;
+
                 }
 
                 if (password.length() < 6) {
                     etpassword.setError("Password Must be >= 6 characters");
+
                 }
 
                 if (TextUtils.isEmpty(fullname)) {
                     etname.setError("email is required");
                     return;
+
                 }
 
-                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Registration.this, new OnCompleteListener<AuthResult>() {
+
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        if (task.isSuccessful()) {
 
-                            // added by uriel for testing purposes
-                            //FirebaseUser user = fAuth.getCurrentUser();
-                        }else{
-                            Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+
+                            User newuser = new User(fullname, email, password);
+
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(newuser)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                Toast.makeText(Registration.this, "User created.", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(getApplicationContext(), JoinOrFormGroupPage.class));
+                                            }
+                                            else{
+                                                Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(Registration.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
             }
         });
 
-    }
     /*private class RegisterButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -168,5 +175,7 @@ public class Registration extends AppCompatActivity {
 
 */
 
-} //class
+
+    }
+}
 
