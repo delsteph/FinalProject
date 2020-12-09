@@ -29,20 +29,19 @@ public class MainActivity extends AppCompatActivity {
     // displays the grocery items
     private ListView lv;
     ArrayAdapter<String> arrayAdapter;
-    //ArrayAdapter<GroceryItem> arrayAdapter;
+
     // gets item that's selected
     String selectedFromList;
 
-    //private RecyclerView recyclerView;
-    //private RecyclerView.LayoutManager layoutManager;
-    //private RecyclerView.Adapter recyclerAdapter;
+
 
     private Button addItemButton;
     private Button removeItemButton;
     private Button purchaseItemButton;
     private Button viewPurchasedList;
+    private Button logout;
+    private Button profile;
 
-    //private List<GroceryItem> groceryItemsList;
     private List<String> groceryItemsList;
 
 
@@ -53,13 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d( DEBUG_TAG, "MainActivity.onCreate()" );
 
-        //recyclerView = (RecyclerView) findViewById( R.id.recyclerView );
 
-        lv = (ListView) findViewById(R.id.purchasedListView);
+        // listview to display the list
+        lv = (ListView) findViewById(R.id.groceryListView);
 
-        // use a linear layout manager for the recycler view
-        //layoutManager = new LinearLayoutManager(this );
-        //recyclerView.setLayoutManager( layoutManager );
 
         // get a Firebase DB instance reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -79,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange( DataSnapshot snapshot ) {
-                // System.out.println("in the first method ____________----------");
+
                 // Once we have a DataSnapshot object, knowing that this is a list,
                 // we need to iterate over the elements and place them on a List.
                 for( DataSnapshot postSnapshot: snapshot.getChildren() ) {
@@ -93,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.d( DEBUG_TAG, "MainActivity.onCreate(): setting recyclerAdapter" );
 
-                // Now, create a GroceryItemRecyclerAdapter to populate a ReceyclerView to display the job leads.
-                //recyclerAdapter = new GroceryItemRecyclerAdapter( groceryItemsList );
-                //recyclerView.setAdapter( recyclerAdapter );
 
                 arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, groceryItemsList );
 
@@ -124,8 +117,13 @@ public class MainActivity extends AppCompatActivity {
         viewPurchasedList = (Button) findViewById( R.id.purchasedListButton );
         viewPurchasedList.setOnClickListener( new purchasedListButtonClickListener());
 
-        Button profile = (Button)findViewById(R.id.userProfile);
+        //button to allow user to see their information
+        profile = (Button)findViewById(R.id.userProfile);
         profile.setOnClickListener( new profileButtonClickListener());
+
+        //button to allow user to logout
+        logout = (Button)findViewById(R.id.logoutButton);
+        logout.setOnClickListener( new logoutButtonClickListener());
 
 
         // sets the selected item from list
@@ -152,6 +150,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), UserInfoPage.class);
+            view.getContext().startActivity(intent);
+        }
+    }
+
+    private class logoutButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            Intent intent = new Intent(view.getContext(), Login.class);
             view.getContext().startActivity(intent);
         }
     }

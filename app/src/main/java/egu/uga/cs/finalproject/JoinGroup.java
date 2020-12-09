@@ -74,10 +74,23 @@ public class JoinGroup extends AppCompatActivity {
                     }
                 });
 
+
+
+//        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("users").child(userID);
+//        ref2.child("groupID").setValue(groupID)
+//
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//
+//                        Toast.makeText(JoinGroup.this, "Group added to user", Toast.LENGTH_SHORT).show();
+//                        // startActivity(new Intent(getApplicationContext(), Login.class));
+//                    }
+//                });
         User user2 = new User();
         user2.setGroupID(groupID);
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("users");
-        ref1.child(userID)
+        ref2.child(userID)
                 .setValue(user2)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

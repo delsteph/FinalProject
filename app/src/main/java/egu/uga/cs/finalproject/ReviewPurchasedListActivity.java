@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -49,7 +48,7 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
 
         Log.d( DEBUG_TAG, "MainActivity.onCreate()" );
 
-        listView = (ListView) findViewById(R.id.purchasedListView);
+        listView = (ListView) findViewById(R.id.groceryListView);
 
         // get a Firebase DB instance reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -216,7 +215,7 @@ public class ReviewPurchasedListActivity extends AppCompatActivity {
     private class settleCostButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), NewGroceryItemActivity.class);
+            Intent intent = new Intent(view.getContext(), SettleCostActivity.class);
             view.getContext().startActivity(intent);
         }
     }

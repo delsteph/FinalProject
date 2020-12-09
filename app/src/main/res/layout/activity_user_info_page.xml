@@ -10,27 +10,28 @@
         android:id="@+id/groupidview"
         android:layout_width="308dp"
         android:layout_height="116dp"
-        android:layout_marginTop="148dp"
         android:text="Hello"
+        app:layout_constraintBottom_toTopOf="@+id/listview1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listview1"
-        android:layout_width="343dp"
-        android:layout_height="273dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="319dp"
+        android:layout_height="202dp"
+        app:layout_constraintBottom_toTopOf="@+id/listview2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintTop_toBottomOf="@+id/groupidview" />
 
     <ListView
         android:id="@+id/listview2"
-        android:layout_width="462dp"
-        android:layout_height="381dp"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="663dp" />
+        android:layout_width="300dp"
+        android:layout_height="254dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listview1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

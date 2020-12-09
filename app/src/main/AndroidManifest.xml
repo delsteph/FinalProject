@@ -30,6 +30,7 @@
         <activity android:name=".ReviewPurchasedListActivity"/>
         <activity android:name=".UpdatePriceActivity"/>
         <activity android:name=".PurchaseItemActivity"/>
+        <activity android:name=".SettleCostActivity"/>
     </application>
 
 </manifest>

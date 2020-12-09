@@ -7,7 +7,7 @@
 
 
     <ListView
-        android:id="@+id/purchasedListView"
+        android:id="@+id/groceryListView"
         android:choiceMode="singleChoice"
         android:listSelector="@android:color/darker_gray"
         android:layout_width="423dp"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Grocery List"
-        app:layout_constraintBottom_toTopOf="@+id/purchasedListView"
+        app:layout_constraintBottom_toTopOf="@+id/groceryListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.931"
         app:layout_constraintStart_toStartOf="parent"

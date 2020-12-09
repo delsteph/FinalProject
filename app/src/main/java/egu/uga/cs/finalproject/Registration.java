@@ -81,7 +81,7 @@ public class Registration extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-
+                            //String groupID = "";
                             User newuser = new User(fullname, email);
 
                             FirebaseDatabase.getInstance().getReference("users")

@@ -39,6 +39,10 @@ public class FormGroup extends AppCompatActivity {
         groupName = (EditText) findViewById(R.id.groupName);
         groupCode = (TextView) findViewById(R.id.groupCode);
 
+        // sets the group code
+        groupID = "" + System.currentTimeMillis();
+        groupCode.setText(groupID);
+
 
         button = (Button) findViewById(R.id.button2);
         fAuth = FirebaseAuth.getInstance();
@@ -48,7 +52,6 @@ public class FormGroup extends AppCompatActivity {
             public void onClick(View view) {
 
                 groupTitle = groupName.getText().toString();
-                groupID = "" + System.currentTimeMillis();
                 userID = fAuth.getUid();
 
                 if (TextUtils.isEmpty(groupTitle)) {
@@ -57,8 +60,6 @@ public class FormGroup extends AppCompatActivity {
 
                 } else {
                     createGroup(groupID, groupTitle);
-
-                    groupCode.setText(groupID);
                 }
             }
         }); //end of button

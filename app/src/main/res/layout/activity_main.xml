@@ -7,18 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/purchasedListButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Purchased Groceries"
-        app:layout_constraintBottom_toTopOf="@+id/purchasedListView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ListView
-        android:id="@+id/purchasedListView"
+        android:id="@+id/groceryListView"
         android:layout_width="423dp"
         android:layout_height="484dp"
         android:choiceMode="singleChoice"
@@ -31,16 +21,17 @@
         app:layout_constraintVertical_bias="0.303" />
 
     <Button
-        android:id="@+id/removeItem"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remove Item"
+        android:layout_marginBottom="16dp"
+        android:text="Add Item"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/purchaseItemMainButton"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
-        app:layout_constraintVertical_bias="0.637" />
+        app:layout_constraintStart_toEndOf="@+id/removeItem"
+        app:layout_constraintTop_toBottomOf="@+id/groceryListView"
+        app:layout_constraintVertical_bias="0.731" />
 
     <Button
         android:id="@+id/purchaseItemMainButton"
@@ -51,28 +42,54 @@
         app:layout_constraintEnd_toStartOf="@+id/removeItem"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
+        app:layout_constraintTop_toBottomOf="@+id/groceryListView"
         app:layout_constraintVertical_bias="0.631" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/removeItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Add Item"
+        android:text="Remove Item"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/removeItem"
-        app:layout_constraintTop_toBottomOf="@+id/purchasedListView"
-        app:layout_constraintVertical_bias="0.731" />
+        app:layout_constraintStart_toEndOf="@+id/purchaseItemMainButton"
+        app:layout_constraintTop_toBottomOf="@+id/groceryListView"
+        app:layout_constraintVertical_bias="0.637" />
+
+    <Button
+        android:id="@+id/purchasedListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Purchased Groceries"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/groceryListView"
+        app:layout_constraintEnd_toStartOf="@+id/logoutButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/userProfile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.518" />
 
     <Button
         android:id="@+id/userProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="profile"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="15dp" />
+        app:layout_constraintBottom_toTopOf="@+id/groceryListView"
+        app:layout_constraintEnd_toStartOf="@+id/purchasedListButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        app:layout_constraintBottom_toTopOf="@+id/groceryListView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/purchasedListButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
