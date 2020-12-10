@@ -2,13 +2,16 @@ package egu.uga.cs.finalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,19 +28,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class SettleCostActivity extends AppCompatActivity {
     public static final String DEBUG_TAG = "SettleCostActivity";
 
     //variables
     private ArrayList<Double> userOnePurchases;
-    private String buyer1 = "ana@email.com";
+    private String buyer1;
     private Double userOneSum = 0.0;
     private ArrayList<Double> userTwoPurchases;
-    private String buyer2 = "john@email.com";
+    private String buyer2;
     private Double userTwoSum = 0.0;
     private ArrayList<Double> userThreeSum;
     private String buyer3 = "";
+
+    // saves the emails of the users
+    private ArrayList<String> array = new ArrayList<>();
+    private String currentUserGroupID;
+
 
     private Button cancelButton;
     private Button finalizeButton;
@@ -59,75 +68,86 @@ public class SettleCostActivity extends AppCompatActivity {
         displayInfo = (TextView) findViewById( R.id.displayCostInfo );
         displayInfo2 = (TextView) findViewById( R.id.displayCostInfo2 );
 
-
-
         // to get current signed in user
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserEmail = currentUser.getEmail();
 
-        // gets information passed to it from main view
-        //Intent mIntent = getIntent();
-        //selectedFromListValue = mIntent.getStringExtra("selectedFromList");
+        //gets the group id of the current user
+        getCurrentUserID();
+        //getUsersWithID(currentUserGroupID);
 
 
         // get a Firebase DB instance reference
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("PurchasedGroceries");
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //DatabaseReference myRef = database.getReference("PurchasedGroceries");
 
         // instantiate list reference
         purchasedItemsList = new ArrayList<GroceryItemPurchased>();
 
-        // Set up a listener (event handler) to receive a value for the database reference, but only one time.
-        // This type of listener is called by Firebase once by immediately executing its onDataChange method.
-        // We can use this listener to retrieve the current list of GroceryItems.
-        // Other types of Firebase listeners may be set to listen for any and every change in the database
-        // i.e., receive notifications about changes in the data in real time (hence the name, Realtime database).
-        // This listener will be invoked asynchronously, as no need for an AsyncTask, as in the previous apps
-        // to maintain groceries.
-        myRef.addListenerForSingleValueEvent( new ValueEventListener() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // get a Firebase DB instance reference
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("PurchasedGroceries");
+                // Set up a listener (event handler) to receive a value for the database reference, but only one time.
+                // This type of listener is called by Firebase once by immediately executing its onDataChange method.
+                // We can use this listener to retrieve the current list of GroceryItems.
+                // Other types of Firebase listeners may be set to listen for any and every change in the database
+                // i.e., receive notifications about changes in the data in real time (hence the name, Realtime database).
+                // This listener will be invoked asynchronously, as no need for an AsyncTask, as in the previous apps
+                // to maintain groceries.
+                myRef.addListenerForSingleValueEvent( new ValueEventListener() {
 
-            @Override
-            public void onDataChange( DataSnapshot snapshot ) {
-                System.out.println("print this inisde ----------");
-                // Once we have a DataSnapshot object, knowing that this is a list,
-                // we need to iterate over the elements and place them on a List.
-                for( DataSnapshot postSnapshot: snapshot.getChildren() ) {
-                    System.out.println("print this inisde here now ----------");
-                    // retrieve name of purchaser
-                    String purchaser = postSnapshot.child("purchaserName").getValue(String.class);
+                    @Override
+                    public void onDataChange( DataSnapshot snapshot ) {
+                        System.out.println("print this inisde ----------");
+                        buyer1 = array.get(0);
+                        System.out.println("print this inisde ----------" + buyer1);
+                        buyer2 = array.get(1);
+                        System.out.println("print this inisde ----------" + buyer2);
+                        // Once we have a DataSnapshot object, knowing that this is a list,
+                        // we need to iterate over the elements and place them on a List.
+                        for( DataSnapshot postSnapshot: snapshot.getChildren() ) {
+                            System.out.println("print this inisde here now ----------");
+                            // retrieve name of purchaser
+                            String purchaser = postSnapshot.child("purchaserName").getValue(String.class);
 
-                    if (purchaser.equals(buyer1)) {
-                        String price = postSnapshot.child("price").getValue(String.class);
-                        double priceDouble = Double.parseDouble(price);
-                        System.out.println("print this price ----------" + priceDouble);
-                        userOneSum = userOneSum + priceDouble;
-                        //userOnePurchases.add(priceDouble);
-                    } else if (purchaser.equals(buyer2)) {
-                        String price = postSnapshot.child("price").getValue(String.class);
-                        double priceDouble = Double.parseDouble(price);
-                        System.out.println("print this price ----------" + priceDouble);
-                        userTwoSum = userTwoSum + priceDouble;
-                        //userTwoPurchases.add(priceDouble);
+                            if (purchaser.equals(buyer1)) {
+                                String price = postSnapshot.child("price").getValue(String.class);
+                                double priceDouble = Double.parseDouble(price);
+                                System.out.println("print this price ----------" + priceDouble);
+                                userOneSum = userOneSum + priceDouble;
+                                //userOnePurchases.add(priceDouble);
+                            } else if (purchaser.equals(buyer2)) {
+                                String price = postSnapshot.child("price").getValue(String.class);
+                                double priceDouble = Double.parseDouble(price);
+                                System.out.println("print this price ----------" + priceDouble);
+                                userTwoSum = userTwoSum + priceDouble;
+                                //userTwoPurchases.add(priceDouble);
+                            }
+                        }
+
+                        //userOneSum = sumArray(userOnePurchases);
+                        Double userOneOwed = userOneSum / 2.0;
+
+                        //userTwoSum = sumArray(userTwoPurchases);
+                        Double userTwoOwed = userTwoSum / 2.0;
+
+                        displayInfo.setText(buyer1 + " is owed " + userOneOwed+ " by each roommate.");
+                        displayInfo2.setText(buyer2 + " is owed " + userTwoOwed+ " by each roommate.");
+
                     }
-                }
 
-                //userOneSum = sumArray(userOnePurchases);
-                Double userOneOwed = userOneSum / 2.0;
-
-                //userTwoSum = sumArray(userTwoPurchases);
-                Double userTwoOwed = userTwoSum / 2.0;
-
-                displayInfo.setText(buyer1 + " is owed " + userOneOwed+ " by each roommate.");
-                displayInfo2.setText(buyer2 + " is owed " + userTwoOwed+ " by each roommate.");
-
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("The read failed: " + databaseError.getMessage());
+                    }
+                } );
             }
+        }, 5000);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        } );
 
         // if button is clicked, adds purchased item to purchased list in database
         //purchaseButton.setOnClickListener( new PurchaseItemActivity.purchaseButtonClickListener());
@@ -161,6 +181,7 @@ public class SettleCostActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot grocerySnapshot : dataSnapshot.getChildren()) {
                         // deletes all the children under "PurchasedGroceries"
+
                         grocerySnapshot.getRef().removeValue();
                     }
                     Toast.makeText(getApplicationContext(), "Purchased Groceries List has been cleared. You settled the cost.",
@@ -177,6 +198,62 @@ public class SettleCostActivity extends AppCompatActivity {
         }
     }
 
+
+    private void getCurrentUserID() {
+
+        // gets the group id
+        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
+        Query userQuery1 = ref1.child("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail());
+        userQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    currentUserGroupID = ds.child("groupID").getValue(String.class);
+
+                    System.out.println("-------current user groupc id=====" + currentUserGroupID);
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            getUsersWithID(currentUserGroupID);
+                        }
+                    }, 1000);
+                    //getUsersWithID(currentUserGroupID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+       // return currentUserGroupID;
+    }
+
+    private void getUsersWithID(String groupID) {
+        // gets the users in the group
+        System.out.println("-------cinside getusers with id=====" + groupID);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query userQuery = ref.child("users").orderByChild("groupID").equalTo(groupID);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    String email = ds.child("email").getValue(String.class);
+                    System.out.println("-------current user email=====" + email);
+
+                    array.add(email);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
 //    private class purchaseButtonClickListener implements View.OnClickListener {

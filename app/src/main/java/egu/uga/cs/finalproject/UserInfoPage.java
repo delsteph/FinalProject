@@ -61,20 +61,10 @@ public class UserInfoPage extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         userID = fAuth.getUid();
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference("users");
-
-       /* FD2 = FirebaseDatabase.getInstance();
-
-        myRef2 = FD2.getReference("users").child(userID);*/
-
-
-        //DatabaseReference newRef = myRef.child("users");
-        FirebaseUser user = fAuth.getCurrentUser();
-
-
-        //myRef = FirebaseDatabase.getInstance().getReference("users");
-        myRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        //Query groceryQuery = ref.child("PurchasedGroceries").orderByChild("groceryName").equalTo(selectedFromListValue);
+        Query userQuery = ref.child("users").orderByChild("email").equalTo(fAuth.getCurrentUser().getEmail());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -88,20 +78,6 @@ public class UserInfoPage extends AppCompatActivity {
             }
         });
 
-
-       /* myRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                showData2(dataSnapshot);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -110,8 +86,11 @@ public class UserInfoPage extends AppCompatActivity {
 
 
             email = ds.child("email").getValue(String.class);
+
             group = ds.child("groupID").getValue(String.class);
+
             name = ds.child("name").getValue(String.class);
+
 
            /* uInfo.setName(ds.getValue(User.class).getName());
             uInfo.setEmail(ds.getValue(User.class).getEmail()); */
